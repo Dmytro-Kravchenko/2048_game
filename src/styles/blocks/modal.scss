@@ -1,0 +1,58 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2.3vmin;
+  background: rgba(0, 0, 0, 0.5);
+
+  &__content {
+    width: 56vmin;
+    padding: 2vmin;
+    color: $white;
+    background: $white;
+    text-align: center;
+    border-radius: $border-radius;
+  }
+
+  &__message {
+    color: $black;
+  }
+
+  &__button {
+    width: 9vmin;
+    height: 5vmin;
+    padding: 0;
+    font-size: 2.3vmin;
+    color: $black;
+    border: none;
+    border-radius: 1vmin;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.25s ease background;
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &--yes {
+      background: $yellow;
+
+      &:hover {
+        background: $dark-yellow;
+      }
+    }
+
+    &--no {
+      background: $field-color;
+
+      &:hover {
+        background: $field-color-dark;
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Cell } from "./cell.class.js";
+import { Cell } from './cell.class.js';
 
 const GRID_SIZE = 4;
 const TOTAL_CELLS = GRID_SIZE * GRID_SIZE;
@@ -46,7 +46,7 @@ export class Grid {
   }
 
   reset() {
-    document.querySelectorAll(".game__field-tile").forEach((tile) => {
+    document.querySelectorAll('.game__field-tile').forEach((tile) => {
       tile.remove();
     });
 

@@ -1,46 +1,45 @@
-"use strict";
 
-import { Grid } from "../modules/grid.class.js";
-import { Tile } from "../modules/tile.class.js";
+import { Grid } from '../modules/grid.class.js';
+import { Tile } from '../modules/tile.class.js';
 
-const buttonStart = document.querySelector("button");
-const gameBoard = document.getElementById("game-board");
+const buttonStart = document.querySelector('button');
+const gameBoard = document.getElementById('game-board');
 const grid = new Grid(gameBoard);
 
-const messageWin = document.querySelector(".message__text--win");
-const messageLose = document.querySelector(".message__text--lose");
-const messageStart = document.querySelector(".message__text--start");
+const messageWin = document.querySelector('.message__text--win');
+const messageLose = document.querySelector('.message__text--lose');
+const messageStart = document.querySelector('.message__text--start');
 
-const gameScore = document.querySelector(".game__score");
+const gameScore = document.querySelector('.game__score');
 
 function customConfirm(message) {
   return new Promise((resolve) => {
-    const confirmModal = document.querySelector(".modal");
-    const confirmMessage = document.querySelector(".modal__message");
-    const confirmYes = document.querySelector(".modal__button--yes");
-    const confirmNo = document.querySelector(".modal__button--no");
+    const confirmModal = document.querySelector('.modal');
+    const confirmMessage = document.querySelector('.modal__message');
+    const confirmYes = document.querySelector('.modal__button--yes');
+    const confirmNo = document.querySelector('.modal__button--no');
 
     confirmMessage.textContent = message;
-    confirmModal.classList.remove("hidden");
+    confirmModal.classList.remove('hidden');
 
     confirmYes.onclick = () => {
-      confirmModal.classList.add("hidden");
+      confirmModal.classList.add('hidden');
       resolve(true);
     };
 
     confirmNo.onclick = () => {
-      confirmModal.classList.add("hidden");
+      confirmModal.classList.add('hidden');
       resolve(false);
     };
   });
 }
 
-buttonStart.addEventListener("click", async () => {
-  if (buttonStart.classList.contains("game__button--restart")) {
-    document.removeEventListener("keydown", handleInput);
+buttonStart.addEventListener('click', async() => {
+  if (buttonStart.classList.contains('game__button--restart')) {
+    document.removeEventListener('keydown', handleInput);
 
     const result = await customConfirm(
-      "Are you sure you want to restart the game? All progress will be lost.",
+      'Are you sure you want to restart the game? All progress will be lost.',
     );
 
     if (result) {
@@ -49,23 +48,69 @@ buttonStart.addEventListener("click", async () => {
       setupInput();
     }
   } else {
-    buttonStart.classList.remove("game__button--start");
-    buttonStart.classList.add("game__button--restart");
-    buttonStart.innerHTML = "Restart";
+    buttonStart.classList.remove('game__button--start');
+    buttonStart.classList.add('game__button--restart');
+    buttonStart.innerHTML = 'Restart';
 
     restartGame();
 
-    messageStart.classList.add("hidden");
+    messageStart.classList.add('hidden');
   }
 });
 
 function setupInput() {
-  document.addEventListener("keydown", handleInput, { once: true });
+  document.addEventListener('keydown', handleInput, { once: true });
 }
 
+let touchStartX = 0;
+let touchStartY = 0;
+
+gameBoard.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }
+});
+
+gameBoard.addEventListener('touchend', (e) => {
+  if (e.changedTouches.length === 1) {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Horizontal swipe
+      if (dx > 30) {
+        handleInput({
+          code: 'ArrowRight', isTrusted: true,
+
+        });
+      } else if (dx < -30) {
+        handleInput({
+          code: 'ArrowLeft', isTrusted: true,
+
+        });
+      }
+    } else {
+      // Vertical swipe
+      if (dy > 30) {
+        handleInput({
+          code: 'ArrowDown', isTrusted: true,
+
+        });
+      } else if (dy < -30) {
+        handleInput({
+          code: 'ArrowUp', isTrusted: true,
+        });
+      }
+    }
+  }
+}, { passive: true });
+
 async function handleInput(e) {
-  switch (e.key) {
-    case "ArrowUp":
+  switch (e.code) {
+    case 'ArrowUp':
+    case 'KeyW':
+    case 'Numpad8':
       if (!canMoveUp()) {
         setupInput();
 
@@ -74,7 +119,9 @@ async function handleInput(e) {
       await moveUp();
       break;
 
-    case "ArrowDown":
+    case 'ArrowDown':
+    case 'KeyS':
+    case 'Numpad2':
       if (!canMoveDown()) {
         setupInput();
 
@@ -83,7 +130,9 @@ async function handleInput(e) {
       await moveDown();
       break;
 
-    case "ArrowLeft":
+    case 'ArrowLeft':
+    case 'KeyA':
+    case 'Numpad4':
       if (!canMoveLeft()) {
         setupInput();
 
@@ -92,7 +141,9 @@ async function handleInput(e) {
       await moveLeft();
       break;
 
-    case "ArrowRight":
+    case 'ArrowRight':
+    case 'KeyD':
+    case 'Numpad6':
       if (!canMoveRight()) {
         setupInput();
 
@@ -115,7 +166,7 @@ async function handleInput(e) {
   gameScore.textContent = grid.totalScore;
 
   if (grid.lastMerge === 2048) {
-    messageWin.classList.remove("hidden");
+    messageWin.classList.remove('hidden');
 
     return;
   }
@@ -126,7 +177,7 @@ async function handleInput(e) {
 
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
     newTile.waitForTransitionEnd(true).then(() => {
-      messageLose.classList.remove("hidden");
+      messageLose.classList.remove('hidden');
     });
 
     return;
@@ -231,10 +282,10 @@ function restartGame() {
   grid.getRandomEmptyCell().linkTile(new Tile(gameBoard));
   grid.getRandomEmptyCell().linkTile(new Tile(gameBoard));
 
-  messageLose.classList.add("hidden");
+  messageLose.classList.add('hidden');
 
-  if (!messageWin.classList.contains("hidden")) {
-    messageWin.classList.add("hidden");
+  if (!messageWin.classList.contains('hidden')) {
+    messageWin.classList.add('hidden');
   }
   setupInput();
 }

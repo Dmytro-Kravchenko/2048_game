@@ -1,8 +1,8 @@
 export class Cell {
   constructor(gridElement, x, y, grid) {
-    const cell = document.createElement("div");
+    const cell = document.createElement('div');
 
-    cell.classList.add("game__field-cell");
+    cell.classList.add('game__field-cell');
     gridElement.append(cell);
     this.x = x;
     this.y = y;
@@ -21,8 +21,8 @@ export class Cell {
 
   canAccept(newTile) {
     return (
-      !this.linkedTile ||
-      (!this.linkedTileForMerge && this.linkedTile.value === newTile.value)
+      !this.linkedTile
+      || (!this.linkedTileForMerge && this.linkedTile.value === newTile.value)
     );
   }
 

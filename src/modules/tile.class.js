@@ -1,7 +1,7 @@
 export class Tile {
   constructor(gridElement) {
-    this.tileElement = document.createElement("div");
-    this.tileElement.classList.add("game__field-tile");
+    this.tileElement = document.createElement('div');
+    this.tileElement.classList.add('game__field-tile');
     this.setValue(Math.random() > 0.1 ? 2 : 4);
     gridElement.append(this.tileElement);
   }
@@ -10,8 +10,8 @@ export class Tile {
     this.x = x;
     this.y = y;
 
-    this.tileElement.style.setProperty("--x", x);
-    this.tileElement.style.setProperty("--y", y);
+    this.tileElement.style.setProperty('--x', x);
+    this.tileElement.style.setProperty('--y', y);
   }
 
   setValue(value) {
@@ -30,7 +30,7 @@ export class Tile {
   waitForTransitionEnd(animation = false) {
     return new Promise((resolve) => {
       this.tileElement.addEventListener(
-        animation ? "animationend" : "transitionend",
+        animation ? 'animationend' : 'transitionend',
         resolve,
         { once: true },
       );

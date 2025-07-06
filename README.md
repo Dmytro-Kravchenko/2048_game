@@ -14,6 +14,9 @@
   ### Controls
 
   - **Arrow Keys**: Use the arrow keys to slide the tiles in the desired direction.
+  - **WASD keys**: Use W (up), A (left), S (down), and D (right) to move the tiles.
+  - **Number Pad**: Use the numeric keypad — 8 (up), 4 (left), 5 (down), and 6 (right) to move the tiles.
+  - **Swipe Gestures**: (on touch devices): Swipe up, down, left, or right to move the tiles.
 
   ### Strategy Tips
 
